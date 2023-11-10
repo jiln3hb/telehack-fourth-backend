@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/telehackdb
+    username: telehack
+    password: telehack
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: false
+
+springdoc:
+  swagger-ui:
+    defaultModelsExpandDepth: -1
