@@ -1,6 +1,6 @@
 package com.pulse.telehackfourthbackend.services;
 
-import com.pulse.telehackfourthbackend.entities.MeasureResult;
+import com.pulse.telehackfourthbackend.entities.Measure;
 import com.pulse.telehackfourthbackend.exceptions.BadRequestException;
 import com.pulse.telehackfourthbackend.exceptions.NotFoundException;
 import com.pulse.telehackfourthbackend.repos.MeasureResultRepo;
@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +25,15 @@ public class DBService {
         this.measureResultRepo = measureResultRepo;
     }
 
-    public List<MeasureResult> getAll() {
+    public List<Measure> getAll() {
         log.info("DBService getAll method executed");
         return measureResultRepo.findAll();
     }
 
-    public Optional<MeasureResult> getById(long id) {
+    public Optional<Measure> getById(long id) {
         log.info("DBService getById method executed");
 
-        Optional<MeasureResult> measure = measureResultRepo.findById(id);
+        Optional<Measure> measure = measureResultRepo.findById(id);
         if (measure.isPresent()) return measure;
         else {
             log.error("ERROR: NotFoundException Entity with id {} not found in db", id);
@@ -42,7 +41,7 @@ public class DBService {
         }
     }
 
-    public Page<MeasureResult> getPage(int offset, int limit, String sortBy) {
+    public Page<Measure> getPage(int offset, int limit, String sortBy) {
         if (offset < 0) {
             log.error("ERROR: BadRequestException: Page index must not be less than zero");
             throw new BadRequestException("Page index must not be less than zero");
@@ -53,7 +52,7 @@ public class DBService {
             throw new BadRequestException("Page size must not be less than one");
         }
 
-        Page<MeasureResult> page = measureResultRepo.findAll(PageRequest.of(offset, limit, Sort.by(sortBy)));
+        Page<Measure> page = measureResultRepo.findAll(PageRequest.of(offset, limit, Sort.by(sortBy)));
         log.info("DBService getPage method executed with offset {} and limit {} and total pages {}", offset, limit, page.getTotalPages());
 
         return page;
@@ -64,10 +63,10 @@ public class DBService {
         measureResultRepo.deleteAll();
     }
 
-    public void save(MeasureResult measureResult) {
+    public void save(Measure measure) {
         try {
-            measureResultRepo.save(measureResult);
-            log.info("DBService saved entity with id {}", measureResult.getMeasureId());
+            measureResultRepo.save(measure);
+            log.info("DBService saved entity with id {}", measure.getMeasureId());
         } catch (Exception e) {
             log.error("ERROR: {}", e.getMessage());
         }

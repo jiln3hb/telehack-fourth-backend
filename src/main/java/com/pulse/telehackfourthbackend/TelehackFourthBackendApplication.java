@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TelehackFourthBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TelehackFourthBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TelehackFourthBackendApplication.class, args);
+    }
 
 }

@@ -1,11 +1,10 @@
 package com.pulse.telehackfourthbackend.controllers;
 
-import com.pulse.telehackfourthbackend.entities.MeasureResult;
+import com.pulse.telehackfourthbackend.entities.Measure;
 import com.pulse.telehackfourthbackend.services.DBService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,21 +26,21 @@ public class DBController {
     }
 
     @GetMapping("api/db/all")
-    public List<MeasureResult> getAll() {
+    public List<Measure> getAll() {
         log.info("Get request api/db/all");
         return dbService.getAll();
     }
 
     @GetMapping("api/db/{id}")
-    public Optional<MeasureResult> getById(@PathVariable long id) {
+    public Optional<Measure> getById(@PathVariable long id) {
         log.info("Get request api/db/{id} with id {}", id);
         return dbService.getById(id);
     }
 
     @GetMapping("api/db/page")
-    public Page<MeasureResult> getPage(@RequestParam (value = "offset", defaultValue = "0") int offset,
-                                       @RequestParam(value = "limit", defaultValue = "10") int limit,
-                                       @RequestParam(value = "sortBy", defaultValue = "measureId") String sortBy) {
+    public Page<Measure> getPage(@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                 @RequestParam(value = "limit", defaultValue = "10") int limit,
+                                 @RequestParam(value = "sortBy", defaultValue = "measureId") String sortBy) {
         log.info("Get request api/db/page");
         return dbService.getPage(offset, limit, sortBy);
     }

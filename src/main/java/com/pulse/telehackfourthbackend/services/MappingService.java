@@ -1,6 +1,6 @@
 package com.pulse.telehackfourthbackend.services;
 
-import com.pulse.telehackfourthbackend.entities.MeasureResult;
+import com.pulse.telehackfourthbackend.entities.Measure;
 import com.pulse.telehackfourthbackend.exceptions.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -28,8 +28,8 @@ public class MappingService {
         this.dbService = dbService;
     }
 
-    public List<MeasureResult> map(MultipartFile dataFile)  {
-        ArrayList<MeasureResult> list = new ArrayList<>();
+    public List<Measure> map(MultipartFile dataFile) {
+        /*ArrayList<Measure> list = new ArrayList<>();
 
         XSSFWorkbook workbook;
 
@@ -47,7 +47,7 @@ public class MappingService {
 
             if (row == null || isRowEmpty(row)) break;
 
-            MeasureResult measure = new MeasureResult();
+            Measure measure = new Measure();
             measure.setData(row.getCell(0).getStringCellValue());
 
             try {
@@ -66,14 +66,15 @@ public class MappingService {
             log.info("Entity with id {} mapped from excel and saved in DB", measure.getMeasureId());
         }
 
-        return list;
+        return list;*/
+
+        return null;
     }
 
     private boolean isRowEmpty(Row row) {
         for (int c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
             Cell cell = row.getCell(c);
-            if (cell != null && cell.getCellType() != CellType.BLANK)
-                return false;
+            if (cell != null && cell.getCellType() != CellType.BLANK) return false;
         }
         return true;
     }

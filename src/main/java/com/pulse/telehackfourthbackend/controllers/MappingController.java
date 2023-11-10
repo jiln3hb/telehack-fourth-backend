@@ -1,6 +1,6 @@
 package com.pulse.telehackfourthbackend.controllers;
 
-import com.pulse.telehackfourthbackend.entities.MeasureResult;
+import com.pulse.telehackfourthbackend.entities.Measure;
 import com.pulse.telehackfourthbackend.services.MappingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -25,7 +24,7 @@ public class MappingController {
     }
 
     @PostMapping("/api/input")
-    public List<MeasureResult> input(@RequestParam("file") MultipartFile dataFile) {
+    public List<Measure> input(@RequestParam("file") MultipartFile dataFile) {
         log.info("Post request /mapping/input");
         return mappingService.map(dataFile);
     }
