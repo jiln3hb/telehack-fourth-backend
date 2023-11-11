@@ -25,14 +25,8 @@ public class DBController {
         this.dbService = dbService;
     }
 
-    @GetMapping("api/db/all")
-    public List<Measure> getAll() {
-        log.info("Get request api/db/all");
-        return dbService.getAll();
-    }
-
     @GetMapping("api/db/{id}")
-    public Optional<Measure> getById(@PathVariable long id) {
+    public Measure getById(@PathVariable long id) {
         log.info("Get request api/db/{id} with id {}", id);
         return dbService.getById(id);
     }
@@ -46,6 +40,20 @@ public class DBController {
     }
 
     @DeleteMapping("api/db/delete")
+    public ResponseEntity<?> deleteById(@RequestParam(value = "id") long id) {
+        log.info("Delete request api/db/delete");
+        dbService.deleteAll();
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("api/db/all")
+    public List<Measure> getAll() {
+        log.info("Get request api/db/all");
+        return dbService.getAll();
+    }
+
+    @DeleteMapping("api/db/delete-all")
     public ResponseEntity<?> deleteAll() {
         log.info("Delete request api/db/delete");
         dbService.deleteAll();

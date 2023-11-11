@@ -1,34 +1,35 @@
 package com.pulse.telehackfourthbackend.services;
 
 import com.pulse.telehackfourthbackend.entities.Measure;
-import com.pulse.telehackfourthbackend.exceptions.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
-public class MappingService {
+public class MeasureService {
 
     private final DBService dbService;
 
     @Autowired
-    public MappingService(DBService dbService) {
+    public MeasureService(DBService dbService) {
         this.dbService = dbService;
     }
 
-    public List<Measure> map(MultipartFile dataFile) {
+    public List<Measure> add(String federalDistrict, String placeOfMeasure, LocalDate startDate, LocalDate endDate, MultipartFile measureFile) {
+
+        ArrayList<Measure> list = new ArrayList<>();
+
+
+
         /*ArrayList<Measure> list = new ArrayList<>();
 
         XSSFWorkbook workbook;

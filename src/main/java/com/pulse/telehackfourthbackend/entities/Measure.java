@@ -1,5 +1,9 @@
 package com.pulse.telehackfourthbackend.entities;
 
+import com.pulse.telehackfourthbackend.entities.quality_params.BackgroundInformation;
+import com.pulse.telehackfourthbackend.entities.quality_params.QualityOfDT;
+import com.pulse.telehackfourthbackend.entities.quality_params.QualityOfText;
+import com.pulse.telehackfourthbackend.entities.quality_params.QualityOfVoice;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,5 +28,13 @@ public class Measure {
     private String placeOfMeasure;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String operator;
+
+    @OneToMany(mappedBy = "measure")
+    private List<BackgroundInformation> backgroundInformationList;
+    @OneToMany(mappedBy = "measure")
+    private List<QualityOfVoice> qualityOfVoiceList;
+    @OneToMany(mappedBy = "measure")
+    private List<QualityOfText> qualityOfTextList;
+    @OneToMany(mappedBy = "measure")
+    private List<QualityOfDT> qualityOfDTList;
 }
