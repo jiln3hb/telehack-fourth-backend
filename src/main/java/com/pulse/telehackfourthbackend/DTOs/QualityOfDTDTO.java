@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QualityOfDTDTO {
+    private Long qualityOfDTId;
     private double failedHttpSessionsRate;
     private double avgDTSpeedFromClient;
     private double avgDTSpeedToClient;

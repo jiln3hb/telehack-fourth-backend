@@ -17,8 +17,8 @@ public class OverallDTO {
     private String placeOfMeasure;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<BackgroundInformationDTO> backgroundInformationDTOList;
-    private List<QualityOfVoiceDTO> qualityOfVoiceDTOList;
-    private List<QualityOfTextDTO> qualityOfTextDTOList;
-    private List<QualityOfDTDTO> qualityOfDTDTOList;
+    private List<BackgroundInformationDTO> backgroundInformationList;
+    private List<QualityOfVoiceDTO> qualityOfVoiceList;
+    private List<QualityOfTextDTO> qualityOfTextList;
+    private List<QualityOfDTDTO> qualityOfDTList;
 }

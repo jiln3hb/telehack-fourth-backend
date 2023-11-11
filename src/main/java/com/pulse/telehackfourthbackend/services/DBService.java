@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import com.pulse.telehackfourthbackend.DTOs.*;
 import com.pulse.telehackfourthbackend.entities.Measure;
 import com.pulse.telehackfourthbackend.entities.quality_params.BackgroundInformation;
 import com.pulse.telehackfourthbackend.entities.quality_params.QualityOfDT;
@@ -102,6 +103,68 @@ public class DBService {
         measure.setEndDate(newMeasure.getEndDate());
 
         save(measure);
+    }
+
+    public void update(long id, OverallDTO overallDTO) {
+        Measure measure = getById(id);
+        measure.setParams(overallDTO);
+        save(measure);
+
+        for (BackgroundInformationDTO backgroundInformationDTO : overallDTO.getBackgroundInformationList()) {
+            long idd = backgroundInformationDTO.getBackgroundInformationId();
+            Optional<BackgroundInformation> optBackgroundInformation = backgroundInformationRepo.findById(idd);
+
+            if (optBackgroundInformation.isEmpty()) {
+                log.error("ERROR: NotFoundException: BackgroundInformation entity with such id ({}) not exists", idd);
+                throw new NotFoundException("BackgroundInformation entity with such id (" + idd + ") not exists");
+            }
+
+            BackgroundInformation backgroundInformation = optBackgroundInformation.get();
+            backgroundInformation.setParams(measure, backgroundInformationDTO);
+            save(backgroundInformation);
+        }
+
+        for (QualityOfVoiceDTO qualityOfVoiceDTO : overallDTO.getQualityOfVoiceList()) {
+            long idd = qualityOfVoiceDTO.getQualityOfVoiceId();
+            Optional<QualityOfVoice> optQualityOfVoice = qualityOfVoiceRepo.findById(idd);
+
+            if (optQualityOfVoice.isEmpty()) {
+                log.error("ERROR: NotFoundException: QualityOfVoice entity with such id ({}) not exists", idd);
+                throw new NotFoundException("QualityOfVoice entity with such id (" + idd + ") not exists");
+            }
+
+            QualityOfVoice qualityOfVoice = optQualityOfVoice.get();
+            qualityOfVoice.setParams(measure, qualityOfVoiceDTO);
+            save(qualityOfVoice);
+        }
+
+        for (QualityOfTextDTO qualityOfTextDTO : overallDTO.getQualityOfTextList()) {
+            long idd = qualityOfTextDTO.getQualityOfTextId();
+            Optional<QualityOfText> optQualityOfText = qualityOfTextRepo.findById(idd);
+
+            if (optQualityOfText.isEmpty()) {
+                log.error("ERROR: NotFoundException: QualityOfText entity with such id ({}) not exists", idd);
+                throw new NotFoundException("QualityOfText entity with such id (" + idd + ") not exists");
+            }
+
+            QualityOfText qualityOfText = optQualityOfText.get();
+            qualityOfText.setParams(measure, qualityOfTextDTO);
+            save(qualityOfText);
+        }
+
+        for (QualityOfDTDTO qualityOfDTDTO : overallDTO.getQualityOfDTList()) {
+            long idd = qualityOfDTDTO.getQualityOfDTId();
+            Optional<QualityOfDT> optQualityOfDT = qualityOfDTRepo.findById(idd);
+
+            if (optQualityOfDT.isEmpty()) {
+                log.error("ERROR: NotFoundException: QualityOfDT entity with such id ({}) not exists", idd);
+                throw new NotFoundException("QualityOfDT entity with such id (" + idd + ") not exists");
+            }
+
+            QualityOfDT qualityOfDT = optQualityOfDT.get();
+            qualityOfDT.setParams(measure, qualityOfDTDTO);
+            save(qualityOfDT);
+        }
     }
 
     public Measure getById(long id) {

@@ -39,7 +39,7 @@ public class QualityOfText {
         this.operator = operator;
     }
 
-    public QualityOfText(Measure measure, QualityOfTextDTO qualityOfTextDTO) {
+    public void setParams(Measure measure, QualityOfTextDTO qualityOfTextDTO) {
         this.measure = measure;
         this.undeliveredSmsRate = qualityOfTextDTO.getUndeliveredSmsRate();
         this.avgSmsDeliveryTime = qualityOfTextDTO.getAvgSmsDeliveryTime();

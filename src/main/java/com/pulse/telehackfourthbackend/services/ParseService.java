@@ -18,17 +18,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Service
-public class MeasureService {
+public class ParseService {
 
     private final DBService dbService;
 
     @Autowired
-    public MeasureService(DBService dbService) {
+    public ParseService(DBService dbService) {
         this.dbService = dbService;
     }
 
@@ -47,17 +45,18 @@ public class MeasureService {
         try {
             workbook = new XSSFWorkbook(measureFile.getInputStream());
         } catch (IOException | RuntimeException e) {
-            log.error("ERROR: BadRequestException Provided file must be excel format");
+            log.error("ERROR: BadRequestException: Provided file must be excel format");
             throw new BadRequestException("Provided file must be excel format");
         }
 
         XSSFSheet worksheet = workbook.getSheetAt(0);
         XSSFRow row = worksheet.getRow(17);
+        XSSFCell cell;
 
         int measureCount = countMeasures(row);
 
 
-        for (int i = 2; i < measureCount + 2; i++) {
+        for (int i = 2; i < measureCount + 2; i++) { // TODO ПАРСИТ ЧИСЛА ВСЁ ЕЩЕ НЕ ОЧЕНЬ ПОНЯТНО НОРМ ИЛИ НЕТ
             row = worksheet.getRow(17);
 
             String operator = row.getCell(i).getStringCellValue();
@@ -68,19 +67,51 @@ public class MeasureService {
 
             for (int j = 18; j < 22; j++) {
                 row = worksheet.getRow(j);
-                qosv[j-18] = Double.parseDouble(row.getCell(i).getRawValue());
+                try {
+                    qosv[j-18] = row.getCell(i).getNumericCellValue();
+                } catch (IllegalStateException e) {
+                    log.error("ERROR: BadRequestException: Wrong type of cell");
+                    throw new BadRequestException("Wrong type of cell");
+                } catch (NumberFormatException e) {
+                    log.error("ERROR: BadRequestException: Cell value isn't a parsable double");
+                    throw new BadRequestException("Cell value isn't a parsable double");
+                }
             }
             for (int j = 23; j < 25; j++) {
                 row = worksheet.getRow(j);
-                qost[j-23] = Double.parseDouble(row.getCell(i).getRawValue());
+                try {
+                    qosv[j-23] = row.getCell(i).getNumericCellValue();
+                } catch (IllegalStateException e) {
+                    log.error("ERROR: BadRequestException: Wrong type of cell");
+                    throw new BadRequestException("Wrong type of cell");
+                } catch (NumberFormatException e) {
+                    log.error("ERROR: BadRequestException: Cell value isn't a parsable double");
+                    throw new BadRequestException("Cell value isn't a parsable double");
+                }
             }
             for (int j = 26; j < 30; j++) {
                 row = worksheet.getRow(j);
-                qosdt[j-26] = Double.parseDouble(row.getCell(i).getRawValue());
+                try {
+                    qosv[j-26] = row.getCell(i).getNumericCellValue();
+                } catch (IllegalStateException e) {
+                    log.error("ERROR: BadRequestException: Wrong type of cell");
+                    throw new BadRequestException("Wrong type of cell");
+                } catch (NumberFormatException e) {
+                    log.error("ERROR: BadRequestException: Cell value isn't a parsable double");
+                    throw new BadRequestException("Cell value isn't a parsable double");
+                }
             }
             for (int j = 31; j < 37; j++) {
                 row = worksheet.getRow(j);
-                backgr[j-31] = (int) row.getCell(i).getNumericCellValue();
+                try {
+                    backgr[j-31] = (int) row.getCell(i).getNumericCellValue();
+                } catch (IllegalStateException e) {
+                    log.error("ERROR: BadRequestException: Wrong type of cell");
+                    throw new BadRequestException("Wrong type of cell");
+                } catch (NumberFormatException e) {
+                    log.error("ERROR: BadRequestException: Cell value isn't a parsable double");
+                    throw new BadRequestException("Cell value isn't a parsable double");
+                }
             }
 
             BackgroundInformation backgroundInformation = new BackgroundInformation(measure, backgr, operator);

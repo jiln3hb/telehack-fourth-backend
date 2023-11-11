@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BackgroundInformationDTO {
+    private Long backgroundInformationId;
     private int quantityOfVoiceConnections;
     private int quantityOfVoiceSeq;
     private int quantityOfVoiceConnectionsWithLowIntelligibility;

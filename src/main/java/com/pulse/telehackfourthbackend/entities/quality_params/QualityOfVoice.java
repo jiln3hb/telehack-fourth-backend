@@ -44,7 +44,7 @@ public class QualityOfVoice {
         this.operator = operator;
     }
 
-    public QualityOfVoice(Measure measure, QualityOfVoiceDTO qualityOfVoiceDTO) {
+    public void setParams(Measure measure, QualityOfVoiceDTO qualityOfVoiceDTO) {
         this.measure = measure;
         this.failedAttemptsToEstablishVoiceConnectionRate = qualityOfVoiceDTO.getFailedAttemptsToEstablishVoiceConnectionRate();
         this.failureVoiceConnectionsRate = qualityOfVoiceDTO.getFailureVoiceConnectionsRate();

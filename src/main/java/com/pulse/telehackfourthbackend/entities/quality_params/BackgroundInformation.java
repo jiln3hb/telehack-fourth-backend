@@ -47,7 +47,7 @@ public class BackgroundInformation {
         this.operator = operator;
     }
 
-    public BackgroundInformation(Measure measure, BackgroundInformationDTO backgroundInformationDTO) {
+    public void setParams(Measure measure, BackgroundInformationDTO backgroundInformationDTO) {
         this.measure = measure;
         this.quantityOfVoiceConnections = backgroundInformationDTO.getQuantityOfVoiceConnections();
         this.quantityOfVoiceSeq = backgroundInformationDTO.getQuantityOfVoiceSeq();

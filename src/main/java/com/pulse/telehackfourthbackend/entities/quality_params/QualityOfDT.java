@@ -46,7 +46,7 @@ public class QualityOfDT {
         this.operator = operator;
     }
 
-    public QualityOfDT(Measure measure, QualityOfDTDTO qualityOfDTDTO) {
+    public void setParams(Measure measure, QualityOfDTDTO qualityOfDTDTO) {
         this.measure = measure;
         this.failedHttpSessionsRate = qualityOfDTDTO.getFailedHttpSessionsRate();
         this.avgDTSpeedFromClient = qualityOfDTDTO.getAvgDTSpeedFromClient();

@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QualityOfTextDTO {
+    private Long qualityOfTextId;
     private double undeliveredSmsRate;
     private double avgSmsDeliveryTime;
     private String operator;
