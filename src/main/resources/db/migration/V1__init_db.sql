@@ -22,8 +22,8 @@ create table background_information (
 create table quality_of_text (
     quality_of_text_id bigint not null,
     measure_id bigint not null,
-    undelivered_sms_rate real not null,
-    avg_sms_delivery_time real not null,
+    undelivered_sms_rate double precision not null,
+    avg_sms_delivery_time double precision not null,
     operator varchar(255),
     primary key (quality_of_text_id),
     foreign key (measure_id) references measure(measure_id));
@@ -31,10 +31,10 @@ create table quality_of_text (
 create table quality_of_voice (
     quality_of_voice_id bigint not null,
     measure_id bigint not null,
-    failed_attempts_to_establish_voice_connection_rate real not null,
-    failure_voice_connections_rate real not null,
-    avg_speech_quality real not null,
-    voice_connections_with_low_speech_quality_rate real not null,
+    failed_attempts_to_establish_voice_connection_rate double precision not null,
+    failure_voice_connections_rate double precision not null,
+    avg_speech_quality double precision not null,
+    voice_connections_with_low_speech_quality_rate double precision not null,
     operator varchar(255),
     primary key (quality_of_voice_id),
     foreign key (measure_id) references measure(measure_id));
@@ -42,10 +42,10 @@ create table quality_of_voice (
 create table quality_of_dt (
     quality_of_dt_id bigint not null,
     measure_id bigint not null,
-    failed_http_sessions_rate real not null,
-    avg_dt_speed_from_client real not null,
-    avg_dt_speed_to_client real not null,
-    http_session_time real not null,
+    failed_http_sessions_rate double precision not null,
+    avg_dt_speed_from_client double precision not null,
+    avg_dt_speed_to_client double precision not null,
+    http_session_time double precision not null,
     operator varchar(255),
     primary key (quality_of_dt_id),
     foreign key (measure_id) references measure(measure_id));

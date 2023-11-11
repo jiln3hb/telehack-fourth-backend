@@ -10,9 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QualityOfVoiceDTO {
-    private float failedAttemptsToEstablishVoiceConnectionRate;
-    private float failureVoiceConnectionsRate;
-    private float avgSpeechQuality;
-    private float voiceConnectionsWithLowSpeechQualityRate;
+    private double failedAttemptsToEstablishVoiceConnectionRate;
+    private double failureVoiceConnectionsRate;
+    private double avgSpeechQuality;
+    private double voiceConnectionsWithLowSpeechQualityRate;
     private String operator;
 }

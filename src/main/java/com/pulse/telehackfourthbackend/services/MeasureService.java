@@ -61,24 +61,24 @@ public class MeasureService {
             row = worksheet.getRow(17);
 
             String operator = row.getCell(i).getStringCellValue();
-            float[] qosv = new float[4];
-            float[] qost = new float[2];
-            float[] qosdt = new float[4];
+            double[] qosv = new double[4];
+            double[] qost = new double[2];
+            double[] qosdt = new double[4];
             int[] backgr = new int[6];
 
             for (int j = 18; j < 22; j++) {
                 row = worksheet.getRow(j);
-                qosv[j-18] = Float.parseFloat(row.getCell(i).getRawValue());
+                qosv[j-18] = Double.parseDouble(row.getCell(i).getRawValue());
             }
             for (int j = 23; j < 25; j++) {
                 row = worksheet.getRow(j);
-                qost[j-23] = Float.parseFloat(row.getCell(i).getRawValue());
+                qost[j-23] = Double.parseDouble(row.getCell(i).getRawValue());
             }
             for (int j = 26; j < 30; j++) {
                 row = worksheet.getRow(j);
-                qosdt[j-26] = Float.parseFloat(row.getCell(i).getRawValue());
+                qosdt[j-26] = Double.parseDouble(row.getCell(i).getRawValue());
             }
-            for (int j = 31; j < 36; j++) {
+            for (int j = 31; j < 37; j++) {
                 row = worksheet.getRow(j);
                 backgr[j-31] = (int) row.getCell(i).getNumericCellValue();
             }

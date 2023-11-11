@@ -29,13 +29,13 @@ public class QualityOfVoice {
     @JoinColumn(name = "measure_id")
     @JsonIgnore
     private Measure measure;
-    private float failedAttemptsToEstablishVoiceConnectionRate;
-    private float failureVoiceConnectionsRate;
-    private float avgSpeechQuality;
-    private float voiceConnectionsWithLowSpeechQualityRate;
+    private double failedAttemptsToEstablishVoiceConnectionRate;
+    private double failureVoiceConnectionsRate;
+    private double avgSpeechQuality;
+    private double voiceConnectionsWithLowSpeechQualityRate;
     private String operator;
 
-    public QualityOfVoice(Measure measure, float[] qosv, String operator) {
+    public QualityOfVoice(Measure measure, double[] qosv, String operator) {
         this.measure = measure;
         this.failedAttemptsToEstablishVoiceConnectionRate = qosv[0];
         this.failureVoiceConnectionsRate = qosv[1];

@@ -11,9 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QualityOfDTDTO {
-    private float failedHttpSessionsRate;
-    private float avgDTSpeedFromClient;
-    private float avgDTSpeedToClient;
-    private float httpSessionTime;
+    private double failedHttpSessionsRate;
+    private double avgDTSpeedFromClient;
+    private double avgDTSpeedToClient;
+    private double httpSessionTime;
     private String operator;
 }

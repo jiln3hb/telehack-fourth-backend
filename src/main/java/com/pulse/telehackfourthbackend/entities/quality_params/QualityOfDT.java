@@ -29,15 +29,15 @@ public class QualityOfDT {
     @JoinColumn(name = "measure_id")
     @JsonIgnore
     private Measure measure;
-    private float failedHttpSessionsRate;
+    private double failedHttpSessionsRate;
     @Column(name = "avg_dt_speed_from_client")
-    private float avgDTSpeedFromClient;
+    private double avgDTSpeedFromClient;
     @Column(name = "avg_dt_speed_to_client")
-    private float avgDTSpeedToClient;
-    private float httpSessionTime;
+    private double avgDTSpeedToClient;
+    private double httpSessionTime;
     private String operator;
 
-    public QualityOfDT(Measure measure, float[] qosdt, String operator) {
+    public QualityOfDT(Measure measure, double[] qosdt, String operator) {
         this.measure = measure;
         this.failedHttpSessionsRate = qosdt[0];
         this.avgDTSpeedFromClient = qosdt[1];

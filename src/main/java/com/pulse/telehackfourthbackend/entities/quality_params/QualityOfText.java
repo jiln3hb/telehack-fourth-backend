@@ -28,11 +28,11 @@ public class QualityOfText {
     @JoinColumn(name = "measure_id")
     @JsonIgnore
     private Measure measure;
-    private float undeliveredSmsRate;
-    private float avgSmsDeliveryTime;
+    private double undeliveredSmsRate;
+    private double avgSmsDeliveryTime;
     private String operator;
 
-    public QualityOfText(Measure measure, float[] qost, String operator) {
+    public QualityOfText(Measure measure, double[] qost, String operator) {
         this.measure = measure;
         this.undeliveredSmsRate = qost[0];
         this.avgSmsDeliveryTime = qost[1];

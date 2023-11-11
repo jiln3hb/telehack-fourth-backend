@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QualityOfTextDTO {
-    private float undeliveredSmsRate;
-    private float avgSmsDeliveryTime;
+    private double undeliveredSmsRate;
+    private double avgSmsDeliveryTime;
     private String operator;
 }
