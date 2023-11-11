@@ -1,5 +1,10 @@
 package com.pulse.telehackfourthbackend.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.pulse.telehackfourthbackend.entities.Measure;
 import com.pulse.telehackfourthbackend.entities.quality_params.BackgroundInformation;
 import com.pulse.telehackfourthbackend.entities.quality_params.QualityOfDT;
@@ -14,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -83,13 +89,37 @@ public class DBService {
         }
     }
 
-    public Measure getById(long id) {
-        Optional<Measure> measure = measureRepo.findById(id);
+    public void update(Measure newMeasure) {
+        long id = newMeasure.getMeasureId();
 
-        if (measure.isEmpty()) {
-            log.error("ERROR: NotFoundException Measure entity with id {} not found in db", id);
-            throw new NotFoundException("Measure entity with id " + id + " not found in db");
-        } else return measure.get();
+        log.info("DBService update method executed with id {}", id);
+
+        Measure measure = getById(id);
+
+        measure.setFederalDistrict(newMeasure.getFederalDistrict());
+        measure.setPlaceOfMeasure(newMeasure.getPlaceOfMeasure());
+        measure.setStartDate(newMeasure.getStartDate());
+        measure.setEndDate(newMeasure.getEndDate());
+
+        save(measure);
+    }
+
+    public Measure getById(long id) {
+        log.info("DBService getById method executed with id {}", id);
+
+        Optional<Measure> measure;
+
+        try {
+            measure = measureRepo.findById(id);
+
+            if (measure.isEmpty()) {
+                log.error("ERROR: NotFoundException: Measure entity with id {} not found in db", id);
+                throw new NotFoundException("Measure entity with id " + id + " not found in db");
+            } else return measure.get();
+        } catch (IllegalArgumentException e) {
+            log.error("ERROR: BadRequestException: id {} is not valid", id);
+            throw new BadRequestException("id " + id + " is not valid");
+        }
     }
 
     public Page<Measure> getPage(int offset, int limit, String sortBy) {
@@ -110,8 +140,13 @@ public class DBService {
     }
 
     public void deleteById(long id) {
-        measureRepo.deleteById(id);
-        log.info("DBService deleted measure with id {}", id);
+        try {
+            measureRepo.deleteById(id);
+            log.info("DBService deleted measure with id {}", id);
+        } catch (IllegalArgumentException e) {
+            log.error("ERROR: BadRequestException: id {} is not valid", id);
+            throw new BadRequestException("id " + id + " is not valid");
+        }
     }
 
     public List<Measure> getAll() {

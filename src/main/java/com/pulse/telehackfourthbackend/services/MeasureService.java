@@ -1,14 +1,22 @@
 package com.pulse.telehackfourthbackend.services;
 
 import com.pulse.telehackfourthbackend.entities.Measure;
+import com.pulse.telehackfourthbackend.entities.quality_params.BackgroundInformation;
+import com.pulse.telehackfourthbackend.entities.quality_params.QualityOfDT;
+import com.pulse.telehackfourthbackend.entities.quality_params.QualityOfText;
+import com.pulse.telehackfourthbackend.entities.quality_params.QualityOfVoice;
+import com.pulse.telehackfourthbackend.exceptions.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,59 +32,86 @@ public class MeasureService {
         this.dbService = dbService;
     }
 
-    public List<Measure> add(String federalDistrict, String placeOfMeasure, LocalDate startDate, LocalDate endDate, MultipartFile measureFile) {
+    public Measure parseThanSave(String federalDistrict, String placeOfMeasure, LocalDate startDate, LocalDate endDate, MultipartFile measureFile) {
 
-        ArrayList<Measure> list = new ArrayList<>();
+        Measure measure = new Measure();
+        measure.setFederalDistrict(federalDistrict);
+        measure.setPlaceOfMeasure(placeOfMeasure);
+        measure.setStartDate(startDate);
+        measure.setEndDate(endDate);
 
-
-
-        /*ArrayList<Measure> list = new ArrayList<>();
+        dbService.save(measure);
 
         XSSFWorkbook workbook;
 
         try {
-            workbook = new XSSFWorkbook(dataFile.getInputStream());
+            workbook = new XSSFWorkbook(measureFile.getInputStream());
         } catch (IOException | RuntimeException e) {
             log.error("ERROR: BadRequestException Provided file must be excel format");
             throw new BadRequestException("Provided file must be excel format");
         }
 
         XSSFSheet worksheet = workbook.getSheetAt(0);
+        XSSFRow row = worksheet.getRow(17);
 
-        for (int i = 1; ; i++) {
-            XSSFRow row = worksheet.getRow(i);
+        int measureCount = countMeasures(row);
 
-            if (row == null || isRowEmpty(row)) break;
 
-            Measure measure = new Measure();
-            measure.setData(row.getCell(0).getStringCellValue());
+        for (int i = 2; i < measureCount + 2; i++) {
+            row = worksheet.getRow(17);
 
-            try {
-                measure.setDateTime(row.getCell(1).getLocalDateTimeCellValue());
-            } catch (IllegalStateException e) {
-                log.error("ERROR: IllegalStateException cell [{}, {}] that contains date must be NUMERIC type (this cell has STRING type)", row.getRowNum(), 1);
-                throw new BadRequestException("Cell [" + row.getRowNum() + ", " + 1 + "] that contains date must be NUMERIC type (this cell has STRING type)");
-            } catch (NumberFormatException e) {
-                log.error("ERROR: in cell [{},{}] {}", row.getRowNum(), 1, e.getMessage());
-                throw new BadRequestException("Cell [" + row.getRowNum() + ", " + 1 + "] isn't a parsable double");
+            String operator = row.getCell(i).getStringCellValue();
+            float[] qosv = new float[4];
+            float[] qost = new float[2];
+            float[] qosdt = new float[4];
+            int[] backgr = new int[6];
+
+            for (int j = 18; j < 22; j++) {
+                row = worksheet.getRow(j);
+                qosv[j-18] = Float.parseFloat(row.getCell(i).getRawValue());
+            }
+            for (int j = 23; j < 25; j++) {
+                row = worksheet.getRow(j);
+                qost[j-23] = Float.parseFloat(row.getCell(i).getRawValue());
+            }
+            for (int j = 26; j < 30; j++) {
+                row = worksheet.getRow(j);
+                qosdt[j-26] = Float.parseFloat(row.getCell(i).getRawValue());
+            }
+            for (int j = 31; j < 36; j++) {
+                row = worksheet.getRow(j);
+                backgr[j-31] = (int) row.getCell(i).getNumericCellValue();
             }
 
-            dbService.save(measure);
-            list.add(measure);
+            BackgroundInformation backgroundInformation = new BackgroundInformation(measure, backgr, operator);
+            QualityOfVoice qualityOfVoice = new QualityOfVoice(measure, qosv, operator);
+            QualityOfText qualityOfText = new QualityOfText(measure, qost, operator);
+            QualityOfDT qualityOfDT = new QualityOfDT(measure, qosdt, operator);
 
-            log.info("Entity with id {} mapped from excel and saved in DB", measure.getMeasureId());
+            dbService.save(backgroundInformation);
+            dbService.save(qualityOfVoice);
+            dbService.save(qualityOfText);
+            dbService.save(qualityOfDT);
+
+            measure.addBackgroundInformation(backgroundInformation);
+            measure.addQualityOfVoice(qualityOfVoice);
+            measure.addQualityOfText(qualityOfText);
+            measure.addQualityOfDT(qualityOfDT);
         }
 
-        return list;*/
-
-        return null;
+        return measure;
     }
 
-    private boolean isRowEmpty(Row row) {
-        for (int c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
-            Cell cell = row.getCell(c);
-            if (cell != null && cell.getCellType() != CellType.BLANK) return false;
+    int countMeasures(XSSFRow row) {
+        int measuresCount = 0;
+
+        for (int i = 2; ; i++) {
+            XSSFCell cell = row.getCell(i);
+
+            if (cell.getCellType() == CellType.BLANK) break;
+            measuresCount++;
         }
-        return true;
+
+        return measuresCount;
     }
 }
