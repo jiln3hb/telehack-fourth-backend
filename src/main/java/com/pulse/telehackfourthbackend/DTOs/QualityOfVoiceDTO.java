@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QualityOfVoiceDTO {
+public class QualityOfVoiceDTO { // DTO для сущности QualityOfVoice
     private Long qualityOfVoiceId;
     private double failedAttemptsToEstablishVoiceConnectionRate;
     private double failureVoiceConnectionsRate;

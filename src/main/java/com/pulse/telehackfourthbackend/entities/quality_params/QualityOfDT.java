@@ -17,7 +17,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @Entity
 @Table(name = "quality_of_dt")
-public class QualityOfDT {
+public class QualityOfDT { // класс, который реализует сущность, содержащую часть таблицы "Показатели качества услуг связи по передаче данных"
 
     @Id
     @SequenceGenerator(name = "QUALITY_OF_DT_ID_GEN", sequenceName = "QUALITY_OF_DT_ID_SEQ", allocationSize = 1)
@@ -29,13 +29,13 @@ public class QualityOfDT {
     @JoinColumn(name = "measure_id")
     @JsonIgnore
     private Measure measure;
-    private double failedHttpSessionsRate;
+    private double failedHttpSessionsRate; // Доля неуспешных сессий по протоколу HTTP (HTTP Session Failure Ratio) [%]
     @Column(name = "avg_dt_speed_from_client")
-    private double avgDTSpeedFromClient;
+    private double avgDTSpeedFromClient; // Среднее значение скорости передачи данных от абонента (HTTP UL Mean User Data Rate) [kbit/sec]
     @Column(name = "avg_dt_speed_to_client")
-    private double avgDTSpeedToClient;
-    private double httpSessionTime;
-    private String operator;
+    private double avgDTSpeedToClient; // Среднее значение скорости передачи данных к абоненту (HTTP DL Mean User Data Rate) [kbit/sec]
+    private double httpSessionTime; // Продолжительность успешной сессии (HTTP Session Time) [s]
+    private String operator; // оператор связи, к которому относятся данные измерения
 
     public QualityOfDT(Measure measure, double[] qosdt, String operator) {
         this.measure = measure;

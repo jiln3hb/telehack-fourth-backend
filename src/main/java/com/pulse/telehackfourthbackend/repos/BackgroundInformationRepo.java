@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BackgroundInformationRepo extends JpaRepository<BackgroundInformation, Long> {
+    // интерфейс, который является репозиторием для сущности BackgroundInformation
     Page<BackgroundInformation> findAll(Pageable pageable);
 }

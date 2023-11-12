@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MeasureRepo extends JpaRepository<Measure, Long> {
+    // интерфейс, который является репозиторием для сущности Measure
     Page<Measure> findAll(Pageable pageable);
 }

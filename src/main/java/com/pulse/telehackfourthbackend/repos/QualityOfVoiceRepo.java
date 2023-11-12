@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QualityOfVoiceRepo extends JpaRepository<QualityOfVoice, Long> {
+    // интерфейс, который является репозиторием для сущности QualityOfVoice
     Page<QualityOfVoice> findAll(Pageable pageable);
 }

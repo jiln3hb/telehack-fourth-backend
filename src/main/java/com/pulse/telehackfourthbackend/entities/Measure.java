@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Measure {
+public class Measure { // класс, реализующий сущность, которая содержит в себе данные об измерении, и ссылается на все параметры качества
 
     @Id
     @SequenceGenerator(name = "MEASURE_ID_GEN", sequenceName = "MEASURE_ID_SEQ", allocationSize = 1)

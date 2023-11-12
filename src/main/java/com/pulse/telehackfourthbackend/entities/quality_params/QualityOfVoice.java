@@ -19,6 +19,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @Entity
 public class QualityOfVoice {
+    // класс, который реализует сущность, содержащую часть таблицы:
+    // "Показатели качества услуг подвижной радиотелефонной связи в части голосового соединения"
 
     @Id
     @SequenceGenerator(name = "QUALITY_OF_VOICE_ID_GEN", sequenceName = "QUALITY_OF_VOICE_ID_SEQ", allocationSize = 1)
@@ -29,11 +31,11 @@ public class QualityOfVoice {
     @JoinColumn(name = "measure_id")
     @JsonIgnore
     private Measure measure;
-    private double failedAttemptsToEstablishVoiceConnectionRate;
-    private double failureVoiceConnectionsRate;
-    private double avgSpeechQuality;
-    private double voiceConnectionsWithLowSpeechQualityRate;
-    private String operator;
+    private double failedAttemptsToEstablishVoiceConnectionRate; // Доля неуспешных попыток установления голосового соединения  (Voice Service Non-Acessibility ) [%]
+    private double failureVoiceConnectionsRate; // Доля обрывов голосовых соединений ( Voice Service Cut-off Ratio) [%]
+    private double avgSpeechQuality; // Средняя разборчивость речи на соединение (Speech Quality on Call basis (MOS POLQA))
+    private double voiceConnectionsWithLowSpeechQualityRate; //
+    private String operator; // оператор связи, к которому относятся данные измерения
 
     public QualityOfVoice(Measure measure, double[] qosv, String operator) {
         this.measure = measure;

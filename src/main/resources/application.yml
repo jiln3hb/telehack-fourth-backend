@@ -7,9 +7,6 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: validate
-    properties:
-      hibernate:
-        show_sql: false
 
 springdoc:
   swagger-ui:

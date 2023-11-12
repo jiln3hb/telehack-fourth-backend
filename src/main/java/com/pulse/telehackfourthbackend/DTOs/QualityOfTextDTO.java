@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QualityOfTextDTO {
+public class QualityOfTextDTO { // DTO для сущности QualityOfText
     private Long qualityOfTextId;
     private double undeliveredSmsRate;
     private double avgSmsDeliveryTime;

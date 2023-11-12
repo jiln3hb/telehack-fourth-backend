@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QualityOfDTRepo extends JpaRepository<QualityOfDT, Long> {
+    // интерфейс, который является репозиторием для сущности QualityOfDT
     Page<QualityOfDT> findAll(Pageable pageable);
 }

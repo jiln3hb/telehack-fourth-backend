@@ -22,12 +22,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
-public class DBService {
+public class DBService { // сервис, который занимается взаимодействием с БД
+
+    // константа, в которой содержатся все поля, подлежащие сортировке
+    private final static String[] MEASURE_FIELDS = {"measureId", "federalDistrict", "placeOfMeasure", "startDate", "endDate"};
 
     private final MeasureRepo measureRepo;
     private final BackgroundInformationRepo backgroundInformationRepo;
@@ -45,6 +49,7 @@ public class DBService {
         this.qualityOfDTRepo = qualityOfDTRepo;
     }
 
+    // методы для сохранения всех сущностей в БД
     public void save(Measure measure) {
         try {
             measureRepo.save(measure);
@@ -90,21 +95,7 @@ public class DBService {
         }
     }
 
-    public void update(Measure newMeasure) {
-        long id = newMeasure.getMeasureId();
-
-        log.info("DBService update method executed with id {}", id);
-
-        Measure measure = getById(id);
-
-        measure.setFederalDistrict(newMeasure.getFederalDistrict());
-        measure.setPlaceOfMeasure(newMeasure.getPlaceOfMeasure());
-        measure.setStartDate(newMeasure.getStartDate());
-        measure.setEndDate(newMeasure.getEndDate());
-
-        save(measure);
-    }
-
+    // метод, позволяющий редактировать все сущности в БД путём подачи на вход объекта, содержащего все данные об измерении
     public void update(long id, OverallDTO overallDTO) {
         Measure measure = getById(id);
         measure.setParams(overallDTO);
@@ -167,8 +158,14 @@ public class DBService {
         }
     }
 
+    // метод, для получения сущности из БД по ID
     public Measure getById(long id) {
         log.info("DBService getById method executed with id {}", id);
+
+        if (id < 1) {
+            log.error("ERROR: BadRequestException: Id must be >= 1");
+            throw new BadRequestException("Id must be >= 1");
+        }
 
         Optional<Measure> measure;
 
@@ -185,6 +182,7 @@ public class DBService {
         }
     }
 
+    // метод, для получения постранично сущностей из БД
     public Page<Measure> getPage(int offset, int limit, String sortBy) {
         if (offset < 0) {
             log.error("ERROR: BadRequestException: Page index must not be less than zero");
@@ -196,13 +194,20 @@ public class DBService {
             throw new BadRequestException("Page size must not be less than one");
         }
 
+        if (Arrays.stream(MEASURE_FIELDS).noneMatch(s -> s.equals(sortBy))) {
+            log.error("ERROR: BadRequestException: sortBy param is not valid");
+            throw new BadRequestException("sortBy param is not valid");
+        }
+
         Page<Measure> page = measureRepo.findAll(PageRequest.of(offset, limit, Sort.by(sortBy)));
         log.info("DBService getPage method executed with offset {} and limit {} and total pages {}", offset, limit, page.getTotalPages());
 
         return page;
     }
 
+    // метод удаления сущности из БД по ID
     public void deleteById(long id) {
+        getById(id);
         try {
             measureRepo.deleteById(id);
             log.info("DBService deleted measure with id {}", id);
@@ -212,13 +217,9 @@ public class DBService {
         }
     }
 
+    // метод, для получения всех сущностей из БД
     public List<Measure> getAll() {
         log.info("DBService getAll method executed");
         return measureRepo.findAll();
-    }
-
-    public void deleteAll() {
-        log.info("DBService deleteAll method executed");
-        measureRepo.deleteAll();
     }
 }

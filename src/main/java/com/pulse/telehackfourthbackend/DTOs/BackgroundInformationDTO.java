@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BackgroundInformationDTO {
+public class BackgroundInformationDTO { // DTO для сущности BackgroundInformation
     private Long backgroundInformationId;
     private int quantityOfVoiceConnections;
     private int quantityOfVoiceSeq;

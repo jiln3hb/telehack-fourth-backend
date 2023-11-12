@@ -18,6 +18,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @Entity
 public class QualityOfText {
+    // класс, который реализует сущность, содержащую часть таблицы:
+    // "Показатели качества услуг подвижной радиотелефонной связи в части передачи коротких текстовых сообщений"
 
     @Id
     @SequenceGenerator(name = "QUALITY_OF_TEXT_ID_GEN", sequenceName = "QUALITY_OF_TEXT_ID_SEQ", allocationSize = 1)
@@ -28,9 +30,9 @@ public class QualityOfText {
     @JoinColumn(name = "measure_id")
     @JsonIgnore
     private Measure measure;
-    private double undeliveredSmsRate;
-    private double avgSmsDeliveryTime;
-    private String operator;
+    private double undeliveredSmsRate; // Доля недоставленных SMS сообщений [%]
+    private double avgSmsDeliveryTime; // Среднее время доставки SMS сообщений [сек]
+    private String operator; // оператор связи, к которому относятся данные измерения
 
     public QualityOfText(Measure measure, double[] qost, String operator) {
         this.measure = measure;

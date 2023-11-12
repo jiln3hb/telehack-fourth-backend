@@ -17,7 +17,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class BackgroundInformation {
+public class BackgroundInformation { // класс, который реализует сущность, содержащую часть таблицы "Справочная информация"
 
     @Id
     @SequenceGenerator(name = "BACKGROUND_ID_GEN", sequenceName = "BACKGROUND_ID_SEQ", allocationSize = 1)
@@ -28,13 +28,13 @@ public class BackgroundInformation {
     @JoinColumn(name = "measure_id")
     @JsonIgnore
     private Measure measure;
-    private int quantityOfVoiceConnections;
-    private int quantityOfVoiceSeq;
-    private int quantityOfVoiceConnectionsWithLowIntelligibility;
-    private int quantityOfSentSms;
-    private int quantityOfConnectingToHttpServerAttempts;
-    private int quantityOfHttpSessions;
-    private String operator;
+    private int quantityOfVoiceConnections; // Общее количество тестовых голосовых соединений
+    private int quantityOfVoiceSeq; // Общее количество голосовых последовательностей в оцениваемых соединениях (POLQA)
+    private int quantityOfVoiceConnectionsWithLowIntelligibility; // Количество голосовых соединений с низкой разборчивостью (Negative MOS samples Count, MOS POLQA<2,6)[%]
+    private int quantityOfSentSms; // Общее количество отправленных SMS - сообщений
+    private int quantityOfConnectingToHttpServerAttempts; // Общее количество попыток соединений с сервером передачи данных HTTP (Загрузка файлов)
+    private int quantityOfHttpSessions; // Общее количество тестовых сессий по протоколу HTTP (Web-browsing)
+    private String operator; // оператор связи, к которому относятся данные измерения
 
     public BackgroundInformation(Measure measure, int[] backgr, String operator) {
         this.measure = measure;

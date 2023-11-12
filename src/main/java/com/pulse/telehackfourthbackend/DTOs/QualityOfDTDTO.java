@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QualityOfDTDTO {
+public class QualityOfDTDTO { // DTO для сущности QualityOfDT
     private Long qualityOfDTId;
     private double failedHttpSessionsRate;
     private double avgDTSpeedFromClient;

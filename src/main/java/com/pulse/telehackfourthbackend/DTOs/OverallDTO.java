@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OverallDTO {
+public class OverallDTO { // DTO для передачи всего измерения в одном объекте
     private String federalDistrict;
     private String placeOfMeasure;
     private LocalDate startDate;
