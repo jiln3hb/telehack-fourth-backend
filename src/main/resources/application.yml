@@ -11,3 +11,6 @@ spring:
 springdoc:
   swagger-ui:
     defaultModelsExpandDepth: -1
+
+server:
+  forward-headers-strategy: framework
